@@ -1,12 +1,12 @@
-use std::cmp::Ordering::Equal;
 use std::fs;
+
 use regex::bytes::Regex;
+
 use super::super::utils;
 
 pub fn solve() {
     let mut file = fs::read("src/year23/day3.txt").unwrap();
 
-    let part_regex = Regex::new(r"[^.\d\n]").unwrap();
     let num_regex = Regex::new(r"\d").unwrap();
 
     //Calculate grid width.
@@ -34,7 +34,7 @@ pub fn solve() {
         for col in 0..map[row].len() {
             let char = map[row][col];
 
-            if part_regex.is_match(&[char]) {
+            if char == b'*' {
                 targets.push((row, col));
             }
         }
@@ -44,6 +44,8 @@ pub fn solve() {
     let mut adjacent: Vec<(usize, usize)> = vec![];
 
     for target in targets {
+        let mut target_adj: Vec<(usize, usize)> = vec![];
+
         for row_off in 0..3 {
             let row = target.0 + row_off - 1;
 
@@ -60,33 +62,39 @@ pub fn solve() {
 
                 //If this passes, there is a number at (row, col) that is adjacent to a character.
                 if num_regex.is_match(&[map[row][col]]) {
-                    adjacent.push((row, col));
+                    target_adj.push((row, col));
                 }
             }
         }
+
+        let mut temp: Vec<(usize, usize)> = vec![];
+
+        for index in 0..(target_adj.len() - 1) {
+            let a = target_adj[index];
+            let b = target_adj[index + 1];
+
+            if a.0 != b.0 {
+                temp.push(a);
+                continue
+            }
+
+            if a.1 + 1 != b.1 {
+                temp.push(a);
+                continue
+            }
+        }
+
+        temp.push(target_adj[target_adj.len() - 1]);
+
+        if temp.len() != 2 {
+            continue
+        } else {
+            adjacent.push(temp[0]);
+            adjacent.push(temp[1]);
+        }
     }
 
-    adjacent.sort_by(|a, b| {
-       if a.0.cmp(&b.0) == Equal {
-           return a.1.cmp(&b.1);
-       }
-        a.0.cmp(&b.0)
-    });
-
-    //Removes SOME duplicate pointers.
-    adjacent.dedup_by(|a, b| {
-        if a.0 != b.0 {
-            return false;
-        }
-        if a.1 == b.1 + 1 || a == b {
-            return true;
-        }
-        false
-    });
-
-    let mut total = 0;
-
-    let mut last = (0, 0);
+    let mut result: Vec<i32> = vec![];
 
     for mut loc in adjacent {
         let mut string = "".to_string();
@@ -103,12 +111,6 @@ pub fn solve() {
             loc.1 -= 1;
         }
 
-        //Checks if this number was already counted.
-        if last == loc {
-            continue
-        }
-
-        last = loc;
         string.push(char::from(map[loc.0][loc.1]));
 
         loop {
@@ -124,8 +126,14 @@ pub fn solve() {
         }
 
         if string.len() != 0 {
-            total += utils::get_num(string.as_str());
+            result.push(utils::get_num(string.as_str()));
         }
+    }
+
+    let mut total = 0;
+
+    for index in 0..(result.len() / 2) {
+        total += result[index * 2] * result[(index * 2) + 1];
     }
 
     println!("{}", total);
