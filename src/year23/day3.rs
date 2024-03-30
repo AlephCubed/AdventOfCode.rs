@@ -1,9 +1,10 @@
 use std::cmp::Ordering::Equal;
 use std::fs;
 use regex::bytes::Regex;
+use super::super::utils;
 
 pub fn solve() {
-    let file = fs::read("src/year23/day3.txt").unwrap();
+    let mut file = fs::read("src/year23/day3.txt").unwrap();
 
     let part_regex = Regex::new(r"[^.\d\n]").unwrap();
     let num_regex = Regex::new(r"\d").unwrap();
@@ -17,6 +18,9 @@ pub fn solve() {
         }
         width += 1;
     }
+
+    //Remove newlines.
+    file.retain(|char| char != &b'\n');
 
     //A 2D grid representation of the file.
     let map: Vec<&[u8]> = file
@@ -79,5 +83,43 @@ pub fn solve() {
         false
     });
 
-    println!("{:?}", adjacent);
+    let mut total = 0;
+
+    for mut loc in adjacent {
+        let mut string = "".to_string();
+
+        //Move to front of string.
+        loop {
+            if loc.1 <= 0 {
+                break
+            }
+
+            if !num_regex.is_match(&[map[loc.0][loc.1 - 1]]) {
+                break
+            }
+            loc.1 -= 1;
+        }
+
+        string.push(char::from(map[loc.0][loc.1]));
+
+        loop {
+            if loc.1 >= width - 1 {
+                break
+            }
+
+            if !num_regex.is_match(&[map[loc.0][loc.1 + 1]]) {
+                break
+            }
+            loc.1 += 1;
+            string.push(char::from(map[loc.0][loc.1]));
+        }
+
+        println!("{:?} = {}", loc, string);
+
+        if string.len() != 0 {
+            total += utils::get_num(string.as_str());
+        }
+    }
+
+    println!("{}", total);
 }
