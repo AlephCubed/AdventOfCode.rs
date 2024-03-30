@@ -1,7 +1,7 @@
-mod day1 {
+mod year23 {
     pub mod day1;
 }
 
 fn main() {
-    day1::day1::solve();
+    year23::day1::solve();
 }

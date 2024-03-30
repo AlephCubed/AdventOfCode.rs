@@ -4,7 +4,7 @@ use regex::Regex;
 pub fn solve() {
     let numbers = vec!["one", "two", "three", "four", "five", "six", "seven", "eight", "nine"];
 
-    let contents = fs::read_to_string("src/day1/day1.txt")
+    let contents = fs::read_to_string("src/year23/day1.txt")
         .expect("file present");
 
     let mut total : i32 = 0;
