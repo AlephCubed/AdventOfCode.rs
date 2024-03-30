@@ -52,7 +52,7 @@ pub fn solve() {
             if row >= map.len() { continue }
 
             for col_off in 0..3 {
-                let col = target.0 + col_off - 1;
+                let col = target.1 + col_off - 1;
 
                 //Bounds check.
                 if target.1 == 0 && col_off == 0 { continue }
@@ -73,17 +73,20 @@ pub fn solve() {
         a.0.cmp(&b.0)
     });
 
+    //Removes SOME duplicate pointers.
     adjacent.dedup_by(|a, b| {
         if a.0 != b.0 {
             return false;
         }
-        if a.1 == b.1 + 1 ||  a.1 == b.1 - 1 || a == b {
+        if a.1 == b.1 + 1 || a == b {
             return true;
         }
         false
     });
 
     let mut total = 0;
+
+    let mut last = (0, 0);
 
     for mut loc in adjacent {
         let mut string = "".to_string();
@@ -100,6 +103,12 @@ pub fn solve() {
             loc.1 -= 1;
         }
 
+        //Checks if this number was already counted.
+        if last == loc {
+            continue
+        }
+
+        last = loc;
         string.push(char::from(map[loc.0][loc.1]));
 
         loop {
@@ -113,8 +122,6 @@ pub fn solve() {
             loc.1 += 1;
             string.push(char::from(map[loc.0][loc.1]));
         }
-
-        println!("{:?} = {}", loc, string);
 
         if string.len() != 0 {
             total += utils::get_num(string.as_str());
