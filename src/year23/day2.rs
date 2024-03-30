@@ -1,6 +1,6 @@
 use std::fs::File;
 use std::io::{BufReader, prelude::*};
-use regex::Regex;
+use super::super::utils;
 
 pub fn solve() {
     let file = File::open("src/year23/day2.txt").expect("valid file");
@@ -37,16 +37,11 @@ struct Round {
     blue: i32,
 }
 
-fn get_num(input: &str) -> i32 {
-    let regex = Regex::new(r"\D").unwrap();
-    regex.replace_all(input, "").parse::<i32>().unwrap()
-}
-
 fn load_game(line: &str) -> Game {
     let game_sub = line
         .split(": ")
         .collect::<Vec<&str>>();
-    let game_num = get_num(game_sub[0]);
+    let game_num = utils::get_num(game_sub[0]);
 
     let round_sub = game_sub[1]
         .split("; ")
@@ -71,9 +66,9 @@ fn load_round(string: &str) -> Round {
         let color = value.split(" ").collect::<Vec<&str>>()[1];
 
         match color {
-            "red" => round.red = get_num(value),
-            "green" => round.green = get_num(value),
-            "blue" => round.blue = get_num(value),
+            "red" => round.red = utils::get_num(value),
+            "green" => round.green = utils::get_num(value),
+            "blue" => round.blue = utils::get_num(value),
             _ => panic!("{color} is not a valid color"),
         }
     }

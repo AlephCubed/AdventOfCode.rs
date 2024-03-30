@@ -1,3 +1,5 @@
+mod utils;
+
 mod year23 {
     pub mod day3;
 }
