@@ -8,19 +8,19 @@ pub fn solve() {
 
     let mut total = 0;
 
-    'outer: for l in reader.lines() {
+    for l in reader.lines() {
         let line = l.expect("valid line");
         let game = load_game(&line);
 
+        let mut max = Round{ red: 0, green: 0, blue: 0 };
+
         for round in game.rounds {
-            if round.red > 12 || round.green > 13 || round.blue > 14 {
-                println!("Game {} is not valid", game.number);
-                println!("\tR:{} G:{} B{}", round.red, round.green, round.blue);
-                continue 'outer;
-            }
+            if round.red > max.red { max.red = round.red }
+            if round.green > max.green { max.green = round.green }
+            if round.blue > max.blue { max.blue = round.blue }
         }
 
-        total += game.number;
+        total += max.red * max.green * max.blue;
     }
 
     println!("{total}");
