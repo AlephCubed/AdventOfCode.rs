@@ -119,3 +119,4 @@ fabric.properties
 *.txt
 
 /target
+.idea/material_theme_project_new.xml
