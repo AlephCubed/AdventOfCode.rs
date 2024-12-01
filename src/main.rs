@@ -1,9 +1,9 @@
 mod utils;
 
-mod year23 {
-    pub mod day3;
+mod year24 {
+    pub mod day1;
 }
 
 fn main() {
-    year23::day3::solve();
+    year24::day1::solve();
 }
