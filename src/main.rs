@@ -5,5 +5,9 @@ mod year24 {
 }
 
 fn main() {
-    year24::day1::solve();
+    println!("Solving A:");
+    year24::day1::solve_a();
+
+    println!("Solving B:");
+    year24::day1::solve_b();
 }
