@@ -1,13 +1,13 @@
 mod utils;
 
 mod year24 {
-    pub mod day1;
+    pub mod day2;
 }
 
 fn main() {
     println!("Solving A:");
-    year24::day1::solve_a();
+    year24::day2::solve_a();
 
     println!("Solving B:");
-    year24::day1::solve_b();
+    year24::day2::solve_b();
 }
