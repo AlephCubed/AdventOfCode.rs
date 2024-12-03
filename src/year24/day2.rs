@@ -55,10 +55,7 @@ pub fn solve_b() {
         }).collect();
 
         if check_line(nums) {
-            println!("Good");
             count += 1;
-        } else {
-            println!("Bad");
         }
     }
 
