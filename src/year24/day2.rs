@@ -264,6 +264,21 @@ mod tests {
         assert_eq!(check_line(vec![1, 3, 6, 7, 9]), true);
     }
     
+    //https://www.reddit.com/r/adventofcode/comments/1h4shdu/2024_day_2_part2_edge_case_finder/
+    #[test]
+    fn test_edge_cases() {
+        assert_eq!(check_line(vec![48, 46, 47, 49, 51, 54, 56]), true);
+        assert_eq!(check_line(vec![1, 1, 2, 3, 4, 5]), true);
+        assert_eq!(check_line(vec![1, 2, 3, 4, 5, 5]), true);
+        assert_eq!(check_line(vec![5, 1, 2, 3, 4, 5]), true);
+        assert_eq!(check_line(vec![1, 4, 3, 2, 1]), true);
+        assert_eq!(check_line(vec![1, 6, 7, 8, 9]), true);
+        assert_eq!(check_line(vec![1, 2, 3, 4, 3]), true);
+        assert_eq!(check_line(vec![9, 8, 7, 6, 7]), true);
+        assert_eq!(check_line(vec![7, 10, 8, 10, 11]), true);
+        assert_eq!(check_line(vec![29, 28, 27, 25, 26, 25, 22, 20]), true);
+    }
+    
     #[test]
     fn test_simple_one_offset() {
         assert_eq!(check_line(vec![1, 2, 3, 4]), true);
