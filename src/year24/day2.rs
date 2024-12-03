@@ -62,15 +62,15 @@ pub fn solve_b() {
     println!("Result {count}");
 }
 
-fn check_line(nums: Vec<i8>) -> bool {
-    let mut nums = nums.iter();
+fn check_line(numbers: Vec<i8>) -> bool {
+    let mut nums = numbers.iter();
     
     let mut a = nums.next().unwrap();
     let mut state = State::Equal;
     let mut used = false;
     let mut ignored = false;
 
-    for (b, c) in nums.clone().zip(nums.clone().skip(1)) {
+    for (index, (b, c)) in nums.clone().zip(nums.clone().skip(1)).enumerate() {
         let mut ig = false;
         println!("{a}, {b}, {c}, state: {:?}, used: {used}.", state);
         let state_a = get_state(a, b);
@@ -89,6 +89,7 @@ fn check_line(nums: Vec<i8>) -> bool {
                 println!("Three Errors or used.\n");
                 return false;
 
+            // (a) and (b) are the same errors and (c) is valid.
             } else {
                 // Skip middle value (b).
                 println!("Skipping b: {b}.");
@@ -96,7 +97,7 @@ fn check_line(nums: Vec<i8>) -> bool {
                 state = state_c;
             }
         } else { // Try to recover.
-            // We already used, or they are mismatched errors, we are done.
+            // Both are errors and do not match.
             if state_a.is_err() && state_b.is_err() {
                 println!("Mismatched errors.");
                 return false;
@@ -106,31 +107,33 @@ fn check_line(nums: Vec<i8>) -> bool {
             if state_a.is_err() {
                 // If first pass and error is (a), remove (a).
                 if state.is_err() {
-                    if used {
-                        println!("Already used (1).\n");
-                        return false;
-                    }
+                    assert!(!used);
 
                     println!("Skipping a: {a}.");
                     used = true;
                     a = b;
                     state = state_b;
+                    
+                // We know (b) is not an error.
                 } else if state_c.is_err() {
                     println!("(a) and (c) are errors.");
                     return false;
+                    
+                // (b) and (c) are not errors.
                 } else {
                     if used {
-                        println!("Already used (1.5).\n");
+                        println!("Already used (1).\n");
                         return false;
                     }
 
                     println!("Ignoring - (b) error.");
                     ig = true;
                     a = b;
-                    state = state_a;
                 }
+                
+            // (a) is not an error.
             } else if state_b.is_err() {
-                if !state_c.is_err() { // Try removing (b).
+                if !state_c.is_err() {
                     if used {
                         println!("Already used (2).\n");
                         return false;
@@ -138,9 +141,8 @@ fn check_line(nums: Vec<i8>) -> bool {
 
                     println!("Skipping b1.5: {b}.");
                     used = true;
-                    state = state_c;
                 } else {
-                    // (a) is ok, (b) is err, (c) is err.
+                    // (a) is OK, (b) and (c) are errors.
                     println!("Ignoring - (b) (c) err.");
                     ig = true;
                     a = b;
@@ -149,7 +151,28 @@ fn check_line(nums: Vec<i8>) -> bool {
 
             // Neither are errors, but don't match.
             } else if !state_c.is_err() {
-                if state_c == state || state.is_err() {
+                // Is the first iteration.
+                if state.is_err() {
+                    let state_d = if let Some(d) = numbers.get(index + 3) {
+                        println!("d: {d}.");
+                        get_state(c, &d)
+                    } else {
+                        println!("End.");
+                        State::Increasing
+                    };
+                    println!("d: {:?}.", state_d);
+
+                    if state_d == state_a {
+                        println!("Skip b: {a} - First iteration.");
+                        used = true;
+                    } else {
+                        println!("Skip a: {a} - First iteration.");
+                        a = b;
+                        used = true;
+                    }
+                    
+                // (c) is going in the correct direction.
+                } else if state_c == state {
                     if used {
                         println!("Already used (3).\n");
                         return false;
@@ -157,7 +180,8 @@ fn check_line(nums: Vec<i8>) -> bool {
 
                     println!("Skipping b2: {b}.");
                     used = true;
-                    state = state_c;
+                    
+                
                 } else if state_a == state {
                     if used {
                         println!("Already used (4).\n");
