@@ -320,6 +320,16 @@ mod tests {
     }
 
     #[test]
+    fn test_err_peak_swap_end_save() {
+        assert_eq!(check_line(vec![1, 2, 3, 1]), true);
+    }
+
+    #[test]
+    fn test_err_peak_swap_begin_save() {
+        assert_eq!(check_line(vec![2, 3, 1, 0]), true);
+    }
+
+    #[test]
     fn test_err_jump_end_save() {
         assert_eq!(check_line(vec![1, 3, 6, 10]), true);
     }
