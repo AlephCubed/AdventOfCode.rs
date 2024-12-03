@@ -255,6 +255,16 @@ mod tests {
     use super::*;
     
     #[test]
+    fn test_example() {
+        assert_eq!(check_line(vec![7, 6, 4, 2, 1]), true);
+        assert_eq!(check_line(vec![1, 2, 7, 8, 9]), false);
+        assert_eq!(check_line(vec![9, 7, 6, 2, 1]), false);
+        assert_eq!(check_line(vec![1, 3, 2, 4, 5]), true);
+        assert_eq!(check_line(vec![8, 6, 4, 4, 1]), true);
+        assert_eq!(check_line(vec![1, 3, 6, 7, 9]), true);
+    }
+    
+    #[test]
     fn test_simple_one_offset() {
         assert_eq!(check_line(vec![1, 2, 3, 4]), true);
     }
