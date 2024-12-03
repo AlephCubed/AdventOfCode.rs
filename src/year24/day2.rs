@@ -256,151 +256,126 @@ mod tests {
     
     #[test]
     fn test_simple_one_offset() {
-        let vec = vec![1, 2, 3, 4];
-        assert_eq!(check_line(vec), true);
+        assert_eq!(check_line(vec![1, 2, 3, 4]), true);
     }
 
     #[test]
     fn test_simple_two_offset() {
-        let vec = vec![1, 3, 5, 7];
-        assert_eq!(check_line(vec), true);
+        assert_eq!(check_line(vec![1, 3, 5, 7]), true);
     }
 
     #[test]
     fn test_simple_three_offset() {
-        let vec = vec![1, 4, 7, 10];
-        assert_eq!(check_line(vec), true);
+        assert_eq!(check_line(vec![1, 4, 7, 10]), true);
     }
 
     #[test]
     fn test_simple_down() {
-        let vec = vec![4, 3, 2, 1];
-        assert_eq!(check_line(vec), true);
+        assert_eq!(check_line(vec![4, 3, 2, 1]), true);
     }
     
     #[test]
     fn test_err_jump() {
-        let vec = vec![1, 3, 7, 8];
-        assert_eq!(check_line(vec), false);
+        assert_eq!(check_line(vec![1, 3, 7, 8]), false);
     }
 
     #[test]
     fn test_err_jump_down() {
-        let vec = vec![10, 7, 3, 1];
-        assert_eq!(check_line(vec), false);
+        assert_eq!(check_line(vec![10, 7, 3, 1]), false);
     }
 
     #[test]
     fn test_err_dup_save() {
-        let vec = vec![1, 2, 2, 3];
-        assert_eq!(check_line(vec), true);
+        assert_eq!(check_line(vec![1, 2, 2, 3]), true);
     }
 
     #[test]
     fn test_err_trip() {
-        let vec = vec![1, 2, 2, 2];
-        assert_eq!(check_line(vec), false);
+        assert_eq!(check_line(vec![1, 2, 2, 2]), false);
     }
     
     #[test]
     fn test_err_peak_save() {
-        let vec = vec![1, 2, 4, 3];
-        assert_eq!(check_line(vec), true);
+        assert_eq!(check_line(vec![1, 2, 4, 3]), true);
     }
 
     #[test]
     fn test_err_peak_dup() {
-        let vec = vec![1, 2, 3, 2, 3];
-        assert_eq!(check_line(vec), false);
+        assert_eq!(check_line(vec![1, 2, 3, 2, 3]), false);
     }
 
     #[test]
     fn test_err_peak_swap() {
-        let vec = vec![1, 2, 3, 1, 3];
-        assert_eq!(check_line(vec), false);
+        assert_eq!(check_line(vec![1, 2, 3, 1, 3]), false);
     }
 
     #[test]
     fn test_err_jump_save_end() {
-        let vec = vec![1, 3, 6, 10];
-        assert_eq!(check_line(vec), true);
+        assert_eq!(check_line(vec![1, 3, 6, 10]), true);
     }
 
     #[test]
     fn test_err_jump_save_begin() {
-        let vec = vec![1, 4, 7, 10];
-        assert_eq!(check_line(vec), true);
+        assert_eq!(check_line(vec![1, 4, 7, 10]), true);
     }
-    // ---===---
+    // -----------------=================-----------------
     
     #[test]
     fn test_case_dup_plus_peak() {
-        let vec = vec![8, 9, 11, 11, 13, 10];
-        assert_eq!(check_line(vec), false);
+        assert_eq!(check_line(vec![8, 9, 11, 11, 13, 10]), false);
     }
     
     #[test]
     fn test_case_dup_plus_end_jump() {
-        let vec = vec![25, 27, 28, 28, 31, 35];
-        assert_eq!(check_line(vec), false);
+        assert_eq!(check_line(vec![25, 27, 28, 28, 31, 35]), false);
     }
     
     #[test]
     fn test_case_dup_plus_2_jump() {
-        let vec = vec![71, 73, 73, 76, 82];
-        assert_eq!(check_line(vec), false);
+        assert_eq!(check_line(vec![71, 73, 73, 76, 82]), false);
     }
     
     #[test]
     fn test_case_2_end_jump() {
-        let vec = vec![3, 5, 6, 8, 11, 12, 16, 19];
-        assert_eq!(check_line(vec), false);
+        assert_eq!(check_line(vec![3, 5, 6, 8, 11, 12, 16, 19]), false);
     }
     #[test]
     fn test_case_jump_plus_dup_peak() {
-        let vec = vec![59, 62, 66, 69, 71, 69];
-        assert_eq!(check_line(vec), false);
+        assert_eq!(check_line(vec![59, 62, 66, 69, 71, 69]), false);
     }
     
     #[test]
     fn test_case_jump_plus_dup() {
-        let vec = vec![19, 20, 24, 25, 26, 26];
-        assert_eq!(check_line(vec), false);
+        assert_eq!(check_line(vec![19, 20, 24, 25, 26, 26]), false);
     }
     
     #[test]
     fn test_case_2_jump() {
-        let vec = vec![1, 2, 6, 8, 12];
-        assert_eq!(check_line(vec), false);
+        assert_eq!(check_line(vec![1, 2, 6, 8, 12]), false);
     }
     
     #[test]
     fn test_case_jump_plus_end_jump() {
-        let vec = vec![61, 62, 63, 66, 68, 69, 73, 78];
-        assert_eq!(check_line(vec), false);
+        assert_eq!(check_line(vec![61, 62, 63, 66, 68, 69, 73, 78]), false);
     }
     
     #[test]
     fn test_case_large_jumps() {
-        let vec = vec![43, 46, 48, 55, 58, 59, 60, 63];
-        assert_eq!(check_line(vec), false);
+        assert_eq!(check_line(vec![43, 46, 48, 55, 58, 59, 60, 63]), false);
     }
     
     #[test]
     fn test_case_large_jump_plus_peak() {
-        let vec = vec![35, 38, 40, 45, 46, 47, 44];
-        assert_eq!(check_line(vec), false);
+        assert_eq!(check_line(vec![35, 38, 40, 45, 46, 47, 44]), false);
     }
     
     #[test]
     fn test_case_end_jump_plus_dup() {
-        let vec = vec![84, 85, 86, 87, 94, 94];
-        assert_eq!(check_line(vec), false);
+        assert_eq!(check_line(vec![84, 85, 86, 87, 94, 94]), false);
     }
     
     #[test]
     fn test_case_large_jump2() {
-        let vec = vec![80, 83, 90, 91, 93, 95, 99];
-        assert_eq!(check_line(vec), false);
+        assert_eq!(check_line(vec![80, 83, 90, 91, 93, 95, 99]), false);
     }
 }
