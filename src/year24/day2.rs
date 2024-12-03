@@ -55,7 +55,10 @@ pub fn solve_b() {
         }).collect();
 
         if check_line(nums) {
+            println!("Good");
             count += 1;
+        } else {
+            println!("Bad");
         }
     }
 
@@ -80,6 +83,10 @@ fn check_line(numbers: Vec<i8>) -> bool {
 
         if state_a == state_b {
             if !state_a.is_err() { // All good.
+                if state_a != state && !state.is_err() {
+                    println!("Wrong direction.");
+                    return false;
+                }
                 println!("Good.");
                 a = b;
                 state = state_a;
@@ -105,32 +112,44 @@ fn check_line(numbers: Vec<i8>) -> bool {
 
 
             if state_a.is_err() {
-                // If first pass and error is (a), remove (a).
-                if state.is_err() {
-                    assert!(!used);
-
-                    println!("Skipping a: {a}.");
-                    used = true;
-                    a = b;
-                    state = state_b;
-                    
-                // We know (b) is not an error.
-                } else if state_c.is_err() {
-                    println!("(a) and (c) are errors.");
-                    return false;
-                    
                 // (b) and (c) are not errors.
-                } else {
+                if !state_c.is_err() {
                     if used {
                         println!("Already used (1).\n");
                         return false;
                     }
 
-                    println!("Ignoring - (b) error.");
-                    ig = true;
+                    println!("Skipping b?: {b}.");
+                    used = true;
                     a = b;
+                    
+                // If first pass and error is (a), remove (a). 
+                } else if state.is_err() {
+                    let state_d = if let Some(d) = numbers.get(index + 3) {
+                        println!("d: {d}.");
+                        get_state(c, &d)
+                    } else {
+                        println!("End.");
+                        State::Increasing
+                    };
+                    println!("d: {:?}.", state_d);
+
+                    if state_d == state_a {
+                        println!("Skip b2: {b} - First iteration.");
+                        used = true;
+                        state = state_d;
+                    } else {
+                        println!("Skip a2: {a} - First iteration.");
+                        a = b;
+                        used = true;
+                        state = state_d;
+                    }
+                // We know (b) is not an error.
+                } else {
+                    println!("(a) and (c) are errors.");
+                    return false;
                 }
-                
+
             // (a) is not an error.
             } else if state_b.is_err() {
                 if !state_c.is_err() {
@@ -141,6 +160,7 @@ fn check_line(numbers: Vec<i8>) -> bool {
 
                     println!("Skipping b1.5: {b}.");
                     used = true;
+                    state = state_c;
                 } else {
                     // (a) is OK, (b) and (c) are errors.
                     println!("Ignoring - (b) (c) err.");
@@ -163,12 +183,14 @@ fn check_line(numbers: Vec<i8>) -> bool {
                     println!("d: {:?}.", state_d);
 
                     if state_d == state_a {
-                        println!("Skip b: {a} - First iteration.");
+                        println!("Skip b: {b} - First iteration.");
                         used = true;
+                        state = state_d;
                     } else {
                         println!("Skip a: {a} - First iteration.");
                         a = b;
                         used = true;
+                        state = state_d;
                     }
                     
                 // (c) is going in the correct direction.
@@ -489,5 +511,25 @@ mod tests {
     #[test]
     fn test_case_large_jump2() {
         assert_eq!(check_line(vec![80, 83, 90, 91, 93, 95, 99]), false);
+    }
+    
+    #[test]
+    fn test_case_final_edge_1() {
+        assert_eq!(check_line(vec![83, 80, 80, 81, 80]), false);
+    }
+
+    #[test]
+    fn test_case_final_edge_2() {
+        assert_eq!(check_line(vec![79, 83, 81, 84, 86]), true);
+    }
+    
+    #[test]
+    fn test_case_final_edge_3() {
+        assert_eq!(check_line(vec![10, 16, 13, 15, 16, 19]), true);
+    }
+    
+    #[test]
+    fn test_case_final_edge_4() {
+        assert_eq!(check_line(vec![12, 14, 16, 14, 13, 10, 8]), false);
     }
 }
