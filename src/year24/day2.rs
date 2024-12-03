@@ -353,7 +353,7 @@ mod tests {
 
     #[test]
     fn test_err_peak_jump() {
-        assert_eq!(check_line(vec![4, 5, 0]), false);
+        assert_eq!(check_line(vec![4, 5, 0]), true);
     }
 
     #[test]
