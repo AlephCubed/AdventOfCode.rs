@@ -295,7 +295,7 @@ mod tests {
     }
     
     #[test]
-    fn test_err_peak_save() {
+    fn test_err_peak_save_end() {
         assert_eq!(check_line(vec![1, 2, 4, 3]), true);
     }
 
@@ -310,14 +310,67 @@ mod tests {
     }
 
     #[test]
-    fn test_err_jump_save_end() {
+    fn test_err_jump_end_save() {
         assert_eq!(check_line(vec![1, 3, 6, 10]), true);
     }
 
     #[test]
-    fn test_err_jump_save_begin() {
+    fn test_err_jump_begin_save() {
         assert_eq!(check_line(vec![1, 4, 7, 10]), true);
     }
+    
+    // -----------------=================-----------------
+
+    #[test]
+    fn test_err_double_jump_begin_end() {
+        assert_eq!(check_line(vec![1, 5, 6, 10]), false);
+    }
+
+    #[test]
+    fn test_err_double_dup() {
+        assert_eq!(check_line(vec![1, 1, 2, 2]), false);
+    }
+
+    #[test]
+    fn test_err_double_peak() {
+        assert_eq!(check_line(vec![1, 3, 2, 3, 4, 2]), false);
+    }
+
+    #[test]
+    fn test_err_double_peak_dup_end() {
+        assert_eq!(check_line(vec![1, 3, 2, 3, 4, 3]), false);
+    }
+
+    #[test]
+    fn test_err_jump_peak_save() {
+        assert_eq!(check_line(vec![1, 4, 3]), true);
+    }
+
+    #[test]
+    fn test_err_peak_save() {
+        assert_eq!(check_line(vec![4, 5, 1]), true);
+    }
+
+    #[test]
+    fn test_err_peak_jump() {
+        assert_eq!(check_line(vec![4, 5, 0]), false);
+    }
+
+    #[test]
+    fn test_err_jump_dup() {
+        assert_eq!(check_line(vec![0, 4, 4]), false);
+    }
+
+    #[test]
+    fn test_err_jump_gap_dup() {
+        assert_eq!(check_line(vec![0, 4, 3, 3]), false);
+    }
+
+    #[test]
+    fn test_err_peak_gap_dup() {
+        assert_eq!(check_line(vec![0, 1, 4, 3, 4, 4]), false);
+    }
+
     // -----------------=================-----------------
     
     #[test]
