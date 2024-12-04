@@ -25,6 +25,7 @@ pub fn solve_a() {
     println!("Result: {total}");
 }
 
+/// Todo doesn't include edge case of a "don't" with no closing "do".
 pub fn solve_b() {
     let contents = fs::read_to_string("src/year24/day3.txt")
         .expect("file present");
